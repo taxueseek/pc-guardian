@@ -1,12 +1,12 @@
-# 🛡️ PC Guardian — AI 时代的智能电脑管家
+#  PC Guardian AI 时代的智能电脑管家
 
 > **不只是清理工具，是一个懂你电脑的 Agent。**
 
 PC Guardian 是一款专为 AI Agent（Claude Code / Codex / Grok）设计的电脑管家 Skill。它能像专业管家一样分析你的系统、给出智能建议、安全执行清理——所有操作可回档，所有决策透明可控。
 
-## ✨ 为什么需要 PC Guardian？
+## 为什么需要 PC Guardian？
 
-传统清理软件（CleanMyMac、CCleaner）是黑盒——你点了"清理"，不知道删了什么，删错了没法恢复。
+传统清理软件（CleanMyMac、CCleaner）是黑盒，你点了"清理"，不知道删了什么，删错了没法恢复。
 
 PC Guardian 不一样：
 
@@ -19,19 +19,19 @@ PC Guardian 不一样：
 | 文件整理 | 不支持 | 按项目/用途语义归类 |
 | 系统设置 | 不支持 | 改前备份 + 一键恢复 |
 
-## 🚀 功能一览
+## 功能一览
 
-### 🧹 垃圾清理（智能分级）
+###  垃圾清理（智能分级）
 - **安全项**：应用缓存、日志、npm/pip/brew 缓存 → 直接清理
 - **需确认项**：浏览器缓存、下载旧文件、Docker 镜像 → 预览后确认
 - **高危项**：系统缓存 → 自动备份 + 二次确认
 
-### 📂 文件整理
+###  文件整理
 - 按类型归类（不只是扩展名，能理解文件用途）
 - 查找重复文件（基于哈希）
 - 大文件扫描 + 旧文件清理
 
-### 📡 网络诊断
+###  网络诊断
 - Ping 延迟/丢包测试
 - DNS 解析速度
 - 连接速度估算
@@ -42,12 +42,12 @@ PC Guardian 不一样：
 - Windows: 电源计划、显示设置
 - 修改前自动备份，一键恢复
 
-### 🔒 Skill 安全审计
+###  Skill 安全审计
 - 检测已安装 skill 的安全风险
 - 数据外泄、凭证窃取、系统破坏等 9 大类别
 - 完整性检查（断链引用、硬编码路径）
 
-## 📦 安装
+##  安装
 
 ### 方式一：Claude Code / Codex 安装
 
@@ -72,7 +72,7 @@ cp -r pc-guardian ~/.grok/skills/pc-guardian
 python3 ~/.agents/skills/pc-guardian/scripts/pc_guardian.py all
 ```
 
-## 🎯 使用方式
+##  使用方式
 
 ### 在 Agent 中直接使用
 
@@ -124,7 +124,7 @@ pc_guardian.py backup list
 pc_guardian.py backup rollback ~/.pc-guardian/backups/20260602-120000/
 ```
 
-## 🛡️ 安全设计
+##  安全设计
 
 ### 操作分级
 
@@ -159,7 +159,7 @@ pc_guardian.py backup rollback ~/.pc-guardian/backups/20260602-120000/Caches.bak
 pc_guardian.py settings restore dock_autohide
 ```
 
-## 📁 项目结构
+##  项目结构
 
 ```
 pc-guardian/
