@@ -2,7 +2,7 @@
 
 > **不只是清理工具，是一个懂你电脑的 Agent。**
 
-PC Guardian 是一款专为 AI Agent（Claude Code / Codex / Grok）设计的电脑管家 Skill。它能像专业管家一样分析你的系统、给出智能建议、安全执行清理——所有操作可回档，所有决策透明可控。
+PC Guardian 是一款专为 AI Agent（Claude Code / Codex / Grok）设计的电脑管家 Skill。它能像专业管家一样分析你的系统、给出智能建议、安全执行清理，所有操作可回档，所有决策透明可控。当然AI还是有可能出现误删的，在执行操作前一定要多了解流程，做好备份。
 
 ## 为什么需要 PC Guardian？
 
