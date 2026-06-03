@@ -1,12 +1,16 @@
-#  PC Guardian AI 时代的智能电脑管家
+# PC Guardian v2.2
 
 > **不只是清理工具，是一个懂你电脑的 Agent。**
 
-PC Guardian 是一款专为 AI Agent（Claude Code / Codex / Grok）设计的电脑管家 Skill。它能像专业管家一样分析你的系统、给出智能建议、安全执行清理，所有操作可回档，所有决策透明可控。当然AI还是有可能出现误删的，在执行操作前一定要多了解流程，做好备份。
+PC Guardian 是一款专为 AI Agent（Claude Code / Codex / Grok Build）设计的电脑管家 Skill。它能像专业管家一样分析你的系统、给出智能建议、安全执行清理，所有操作可回档，所有决策透明可控。
+
+**注意：** AI 仍有可能出现误删。执行操作前请了解流程，做好备份。
+
+---
 
 ## 为什么需要 PC Guardian？
 
-传统清理软件（CleanMyMac、CCleaner）是黑盒，你点了"清理"，不知道删了什么，删错了没法恢复。
+传统清理软件（CleanMyMac、CCleaner）是黑盒——点了"清理"，不知道删了什么，删错了没法恢复。
 
 PC Guardian 不一样：
 
@@ -19,37 +23,11 @@ PC Guardian 不一样：
 | 文件整理 | 不支持 | 按项目/用途语义归类 |
 | 系统设置 | 不支持 | 改前备份 + 一键恢复 |
 
-## 功能一览
+---
 
-###  垃圾清理（智能分级）
-- **安全项**：应用缓存、日志、npm/pip/brew 缓存 → 直接清理
-- **需确认项**：浏览器缓存、下载旧文件、Docker 镜像 → 预览后确认
-- **高危项**：系统缓存 → 自动备份 + 二次确认
+## 安装
 
-###  文件整理
-- 按类型归类（不只是扩展名，能理解文件用途）
-- 查找重复文件（基于哈希）
-- 大文件扫描 + 旧文件清理
-
-###  网络诊断
-- Ping 延迟/丢包测试
-- DNS 解析速度
-- 连接速度估算
-- DNS 刷新、MTU 优化
-
-### ⚙️ 系统设置管理
-- macOS: Dock、Finder、电源、DNS、Wi-Fi
-- Windows: 电源计划、显示设置
-- 修改前自动备份，一键恢复
-
-###  Skill 安全审计
-- 检测已安装 skill 的安全风险
-- 数据外泄、凭证窃取、系统破坏等 9 大类别
-- 完整性检查（断链引用、硬编码路径）
-
-##  安装
-
-### 方式一：Claude Code / Codex 安装
+### Claude Code / Codex
 
 ```bash
 # 克隆到 skill 目录
@@ -60,7 +38,7 @@ git clone https://github.com/taxueseek/pc-guardian.git \
 ln -s /path/to/pc-guardian ~/.agents/skills/pc-guardian
 ```
 
-### 方式二：Grok 安装
+### Grok Build
 
 ```bash
 cp -r pc-guardian ~/.grok/skills/pc-guardian
@@ -72,7 +50,62 @@ cp -r pc-guardian ~/.grok/skills/pc-guardian
 python3 ~/.agents/skills/pc-guardian/scripts/pc_guardian.py all
 ```
 
-##  使用方式
+---
+
+## 更新
+
+```bash
+# 进入 skill 目录，拉取最新代码
+cd ~/.agents/skills/pc-guardian && git pull
+
+# 如果是 Grok 安装
+cd ~/.grok/skills/pc-guardian && git pull
+```
+
+---
+
+## 功能一览
+
+### 垃圾清理（智能分级）
+
+- **安全项**：应用缓存、日志、npm/pip/brew 缓存 → 直接清理
+- **需确认项**：浏览器缓存、下载旧文件、Docker 镜像 → 预览后确认
+- **高危项**：系统缓存 → 自动备份 + 二次确认
+
+### 文件整理
+
+- 按类型归类（不只是扩展名，能理解文件用途）
+- 查找重复文件（基于哈希）
+- 大文件扫描 + 旧文件清理
+
+### 网络诊断
+
+- Ping 延迟/丢包测试
+- DNS 解析速度
+- 连接速度估算
+- DNS 刷新、MTU 优化
+
+### 系统设置管理
+
+- macOS: Dock、Finder、电源、DNS、Wi-Fi
+- Windows: 电源计划、显示设置
+- 修改前自动备份，一键恢复
+
+### Skill 安全审计
+
+- 检测已安装 skill 的安全风险
+- 数据外泄、凭证窃取、系统破坏等 9 大类别
+- 完整性检查（断链引用、硬编码路径）
+
+### Skill 更新检查
+
+- 扫描所有已安装 skill 的 Git 状态
+- 检查远程更新
+- 完整报告输出
+
+---
+
+## 使用方式
 
 ### 在 Agent 中直接使用
 
@@ -124,9 +157,9 @@ pc_guardian.py backup list
 pc_guardian.py backup rollback ~/.pc-guardian/backups/20260602-120000/
 ```
 
-##  安全设计
+---
 
-### 操作分级
+## 操作分级
 
 | 等级 | 类型 | 行为 |
 |------|------|------|
@@ -135,7 +168,9 @@ pc_guardian.py backup rollback ~/.pc-guardian/backups/20260602-120000/
 | **L2** | 中风险（需确认清理） | 预览 → 确认 → 备份 → 执行 |
 | **L3** | 高风险（系统设置） | 预览 → 确认 → 备份 → 执行 → 可回档 |
 
-### 备份机制
+---
+
+## 备份机制
 
 ```
 ~/.pc-guardian/
@@ -159,7 +194,9 @@ pc_guardian.py backup rollback ~/.pc-guardian/backups/20260602-120000/Caches.bak
 pc_guardian.py settings restore dock_autohide
 ```
 
-##  项目结构
+---
+
+## 项目结构
 
 ```
 pc-guardian/
@@ -180,25 +217,36 @@ pc-guardian/
     └── security-checklist.md   # 安全检查清单
 ```
 
-## 🖥️ 系统支持
+---
+
+## 系统支持
 
 | 功能 | macOS | Windows |
 |------|-------|---------|
-| 垃圾清理 | ✅ | ✅ |
-| 文件整理 | ✅ | ✅ |
-| 网络诊断 | ✅ | ✅ |
-| 系统设置 | ✅ | ✅ |
-| Skill 审计 | ✅ | ✅ |
-| 安全审计 | ✅ | ✅ |
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 PR！
-
-## 📄 许可证
-
-MIT License
+| 垃圾清理 | 支持 | 支持 |
+| 文件整理 | 支持 | 支持 |
+| 网络诊断 | 支持 | 支持 |
+| 系统设置 | 支持 | 支持 |
+| Skill 审计 | 支持 | 支持 |
+| 更新检查 | 支持 | 支持 |
 
 ---
 
-*Built with ❤️ for the AI Agent era.*
+## 版本历史
+
+| 版本 | 更新 | 日期 |
+|------|------|------|
+| v2.2 | SKILL.md 去除 emoji、精简结构（235→118行）；README 去除 emoji、完善安装/更新/命令参考 | 2026-06 |
+| v2.1 | 初始发布 | 2026-06 |
+
+---
+
+## 贡献
+
+欢迎提交 Issue 和 PR。
+
+---
+
+## 许可证
+
+MIT License

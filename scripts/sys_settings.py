@@ -247,12 +247,12 @@ if __name__ == "__main__":
 
     elif args.command == "set":
         ok, msg = set_setting(args.key, args.value, not args.no_backup)
-        mark = "✅" if ok else "⚠️"
+        mark = "[OK]" if ok else "[WARN]"
         print(f"{mark} {msg}")
 
     elif args.command == "restore":
         ok, msg = restore_last(args.key)
-        mark = "✅" if ok else "⚠️"
+        mark = "[OK]" if ok else "[WARN]"
         print(f"{mark} {msg}")
     else:
         parser.print_help()

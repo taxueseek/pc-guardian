@@ -164,7 +164,7 @@ def check_all_updates():
 
 def full_report():
     """生成完整报告"""
-    print("🔄 PC Guardian Skill 更新检查\n")
+    print(" PC Guardian Skill 更新检查\n")
 
     all_skills = scan_all_skills()
     print(f"已安装 skill 总数：{len(all_skills)}\n")
@@ -174,36 +174,36 @@ def full_report():
     unversioned = [s for s in all_skills if s["version"] == "未标注"]
     failed = [s for s in all_skills if s["version"] == "读取失败"]
 
-    print(f"📊 版本统计：")
+    print(f" 版本统计：")
     print(f"  有版本号：{len(versioned)}")
     print(f"  无版本号：{len(unversioned)}")
     print(f"  读取失败：{len(failed)}\n")
 
     # Git 可更新的
     git_skills = [s for s in all_skills if s.get("has_git")]
-    print(f"📦 Git 管理：{len(git_skills)} 个\n")
+    print(f" Git 管理：{len(git_skills)} 个\n")
 
     if git_skills:
-        print("🔍 检查更新中...\n")
+        print(" 检查更新中...\n")
         updates = check_all_updates()
         has_update = [u for u in updates if u.get("behind_count", 0) > 0]
         up_to_date = [u for u in updates if u.get("behind_count", 0) == 0 and u.get("updatable")]
 
         if has_update:
-            print(f"⬆️  有 {len(has_update)} 个 skill 可更新：")
+            print(f"[UP]  有 {len(has_update)} 个 skill 可更新：")
             for u in has_update:
                 name = os.path.basename(u["path"])
                 count = u["behind_count"]
-                print(f"  📌 {name}: 落后 {count} 个提交")
+                print(f"   {name}: 落后 {count} 个提交")
                 for c in u.get("behind_commits", [])[:3]:
                     print(f"      {c}")
                 print()
         else:
-            print("✅ 所有 git 管理的 skill 均为最新\n")
+            print("[OK] 所有 git 管理的 skill 均为最新\n")
 
     # 未版本化的 skill 提醒
     if unversioned:
-        print(f"⚠️  {len(unversioned)} 个 skill 未标注版本（建议添加 version 字段）：")
+        print(f"[WARN]  {len(unversioned)} 个 skill 未标注版本（建议添加 version 字段）：")
         for s in unversioned[:10]:
             print(f"  - {s['name']}")
         if len(unversioned) > 10:
@@ -211,7 +211,7 @@ def full_report():
         print()
 
     # 最近修改
-    print("🕐 最近修改的 skill：")
+    print(" 最近修改的 skill：")
     sorted_skills = sorted(all_skills, key=lambda x: x.get("last_modified", ""), reverse=True)
     for s in sorted_skills[:5]:
         print(f"  {s['last_modified']}  {s['name']}  v{s['version']}")
@@ -239,7 +239,7 @@ if __name__ == "__main__":
             print(json.dumps(skills, ensure_ascii=False, indent=2))
         else:
             for s in skills:
-                git_mark = "🔀" if s.get("has_git") else "  "
+                git_mark = "" if s.get("has_git") else "  "
                 print(f"  {git_mark} {s['name']:40s} v{s['version']:15s}  {s['last_modified']}")
 
     elif args.command == "check":
@@ -248,7 +248,7 @@ if __name__ == "__main__":
             name = os.path.basename(r["path"])
             status = r.get("status", "未知")
             behind = r.get("behind_count", 0)
-            mark = "⬆️" if behind > 0 else "✅"
+            mark = "[UP]" if behind > 0 else "[OK]"
             print(f"  {mark} {name}: {status} ({behind} commits behind)")
 
     elif args.command == "report":

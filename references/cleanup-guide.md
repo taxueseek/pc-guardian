@@ -2,7 +2,7 @@
 
 ## 安全边界
 
-### ✅ 安全可清理
+### [OK] 安全可清理
 - 用户级缓存（~/Library/Caches, %TEMP%）
 - 应用日志（~/Library/Logs）
 - 回收站（~/.Trash, Recycle Bin）
@@ -10,12 +10,12 @@
 - Xcode DerivedData / Archives
 - Docker 悬空镜像（docker system prune）
 
-### ⚠️ 需谨慎
+### [WARN] 需谨慎
 - /tmp 目录（可能含正在使用的临时文件）
 - 浏览器缓存（会清除登录状态）
 - Windows Prefetch（清理后首次启动变慢）
 
-### ❌ 不清理
+### [FAIL] 不清理
 - 系统关键目录（/System, /usr, C:\Windows\System32）
 - 应用本体（只清缓存不清程序）
 - 用户文档目录

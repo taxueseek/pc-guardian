@@ -249,7 +249,7 @@ def main_tui():
             checked[cat["key"]] = (cat["risk"] == "safe")
 
     tabs = ["垃圾清理", "文件整理", "网络诊断", "安全中心"]
-    tab_icons = ["🧹", "📂", "📡", "🔒"]
+    tab_icons = ["", "", "", ""]
 
     while True:
         clear_screen()
@@ -257,7 +257,7 @@ def main_tui():
 
         # ── 顶部标题栏 ────────────────────────────────────────
         sys.stdout.write(f"\033[1;1H{C_WHITE}{C_BG_BLUE}{' ' * max_x}{C_RESET}")
-        title = "🛡️  PC Guardian 电脑管家"
+        title = "  PC Guardian 电脑管家"
         sys.stdout.write(f"\033[1;3H{C_WHITE}{C_BG_BLUE}{C_BOLD}{title}{C_RESET}")
         sys.stdout.write(f"\033[1;{max_x - 15}H{C_WHITE}{C_BG_BLUE}{datetime.now().strftime('%H:%M')}{C_RESET}")
 
@@ -360,7 +360,7 @@ def main_tui():
             elif key in ('r', 'R'):
                 for cat in categories:
                     checked[cat["key"]] = (cat["risk"] == "safe")
-                message = "✓ 已恢复推荐选项"
+                message = " 已恢复推荐选项"
                 message_time = datetime.now().timestamp()
 
             elif key == 'ENTER':
@@ -373,16 +373,16 @@ def main_tui():
                     if has_confirm:
                         # 确认对话框
                         show_confirm_dialog(max_y, max_x, selected, categories)
-                        message = "✅ 清理完成！"
+                        message = "[OK] 清理完成！"
                         message_time = datetime.now().timestamp()
                         cleanup_data = get_cleanup_data()
                     else:
                         execute_cleanup(selected)
-                        message = "✅ 清理完成！"
+                        message = "[OK] 清理完成！"
                         message_time = datetime.now().timestamp()
                         cleanup_data = get_cleanup_data()
                 else:
-                    message = "⚠️ 未选择任何项目"
+                    message = "[!] 未选择任何项目"
                     message_time = datetime.now().timestamp()
 
 
@@ -401,7 +401,7 @@ def draw_cleanup_tab(data, checked, cursor_y, scroll_offset, max_y, max_x):
     draw_box(panel_y, panel_x, panel_h, panel_w, "可清理项目")
 
     # 表头
-    draw_text(panel_y + 2, panel_x + 3, "☑", C_DIM_COLOR)
+    draw_text(panel_y + 2, panel_x + 3, "", C_DIM_COLOR)
     draw_text(panel_y + 2, panel_x + 8, "类别", C_DIM_COLOR + C_BOLD)
     draw_text(panel_y + 2, panel_x + 22, "大小", C_DIM_COLOR + C_BOLD)
     draw_text(panel_y + 2, panel_x + 32, "风险", C_DIM_COLOR + C_BOLD)
@@ -426,7 +426,7 @@ def draw_cleanup_tab(data, checked, cursor_y, scroll_offset, max_y, max_x):
 
         # 勾选框
         is_checked = checked.get(cat["key"], False)
-        check = "[✓]" if is_checked else "[ ]"
+        check = "[]" if is_checked else "[ ]"
         check_color = C_CHECKED if is_checked else C_UNCHECKED
         if is_selected:
             check_color = C_SELECTED
@@ -471,23 +471,23 @@ def draw_cleanup_tab(data, checked, cursor_y, scroll_offset, max_y, max_x):
     draw_text(stats_y + 1, stats_x + 3, "总可回收:", C_RESET)
     draw_text(stats_y + 1, stats_x + 18, total, C_ACCENT + C_BOLD)
 
-    draw_text(stats_y + 2, stats_x + 3, "✅  安全:", C_SAFE)
+    draw_text(stats_y + 2, stats_x + 3, "[OK]  安全:", C_SAFE)
     draw_text(stats_y + 2, stats_x + 18, rs.get("safe", {}).get("human", "0"), C_SAFE)
 
-    draw_text(stats_y + 3, stats_x + 3, "⚠️  需确认:", C_WARNING)
+    draw_text(stats_y + 3, stats_x + 3, "[!]  需确认:", C_WARNING)
     draw_text(stats_y + 3, stats_x + 18, rs.get("confirm", {}).get("human", "0"), C_WARNING)
 
-    draw_text(stats_y + 4, stats_x + 3, "🔴 高危:", C_DANGER)
+    draw_text(stats_y + 4, stats_x + 3, "[#] 高危:", C_DANGER)
     draw_text(stats_y + 4, stats_x + 18, rs.get("dangerous", {}).get("human", "0"), C_DANGER)
 
-    draw_text(stats_y + 6, stats_x + 3, "💡 推荐清理安全项", C_DIM_COLOR)
+    draw_text(stats_y + 6, stats_x + 3, "* 推荐清理安全项", C_DIM_COLOR)
     draw_text(stats_y + 7, stats_x + 3, "   按 R 恢复推荐", C_DIM_COLOR)
 
 
 def draw_file_tab(max_y, max_x):
     """绘制文件整理标签页"""
     y = 7
-    draw_text(y, 3, "📂 文件整理功能", C_TITLE)
+    draw_text(y, 3, " 文件整理功能", C_TITLE)
     y += 2
     items = [
         ("按类型归类", "将分散的文件按类型整理到子文件夹"),
@@ -512,7 +512,7 @@ def draw_file_tab(max_y, max_x):
 def draw_network_tab(max_y, max_x):
     """绘制网络诊断标签页"""
     y = 7
-    draw_text(y, 3, "📡 网络诊断功能", C_TITLE)
+    draw_text(y, 3, " 网络诊断功能", C_TITLE)
     y += 2
     items = [
         ("网络信息", "IP、网关、Wi-Fi 信号强度"),
@@ -535,7 +535,7 @@ def draw_network_tab(max_y, max_x):
 def draw_security_tab(max_y, max_x):
     """绘制安全中心标签页"""
     y = 7
-    draw_text(y, 3, "🔒 安全中心", C_TITLE)
+    draw_text(y, 3, " 安全中心", C_TITLE)
     y += 2
     items = [
         ("Skill 安全审计", "检测已安装 skill 的安全风险"),
@@ -565,13 +565,13 @@ def show_confirm_dialog(max_y, max_x, selected, categories):
         sys.stdout.write(f"\033[{dialog_y + i};{dialog_x}H{' ' * dialog_w}")
 
     draw_box(dialog_y, dialog_x, dialog_h, dialog_w, "确认清理")
-    draw_text(dialog_y + 1, dialog_x + 3, "⚠️  包含需确认的清理项", C_WARNING + C_BOLD)
+    draw_text(dialog_y + 1, dialog_x + 3, "[!]  包含需确认的清理项", C_WARNING + C_BOLD)
     draw_hline(dialog_y + 2, dialog_x + 2, dialog_w - 4)
 
     row = 3
     for cat in categories:
         if cat["key"] in selected and row < dialog_h - 3:
-            risk_icon = "✅" if cat["risk"] == "safe" else "⚠️"
+            risk_icon = "[OK]" if cat["risk"] == "safe" else "[!]"
             color = C_SAFE if cat["risk"] == "safe" else C_WARNING
             draw_text(dialog_y + row, dialog_x + 4,
                       f"{risk_icon} {cat['desc']} ({cat['total_human']})", color)
@@ -610,7 +610,7 @@ def main():
         pass
     finally:
         clear_screen()
-        sys.stdout.write(f"{C_RESET}感谢使用 PC Guardian 👋{C_RESET}\n")
+        sys.stdout.write(f"{C_RESET}感谢使用 PC Guardian {C_RESET}\n")
         sys.stdout.flush()
 
 

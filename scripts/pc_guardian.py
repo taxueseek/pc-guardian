@@ -69,14 +69,14 @@ def show_log(limit=30):
                     continue
 
     if not entries:
-        print("📋 暂无操作日志")
+        print(" 暂无操作日志")
         return
 
     entries.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
     entries = entries[-limit:]
-    print(f"📋 最近 {len(entries)} 条操作记录:\n")
+    print(f" 最近 {len(entries)} 条操作记录:\n")
     for e in entries:
-        mark = "✅" if e.get("status") == "success" else "❌" if e.get("status") == "failed" else "🔍"
+        mark = "[OK]" if e.get("status") == "success" else "[FAIL]" if e.get("status") == "failed" else ""
         print(f"  {mark} {e['timestamp'][:19]}  {e.get('type', '?'):12s}  {e.get('action', '?'):10s}  {e.get('target', '?')}")
         if e.get("details"):
             for k, v in e["details"].items():
@@ -100,19 +100,19 @@ def main():
         from skill_security import scan_skill
 
         print("=" * 60)
-        print(f"🛡️  PC Guardian 全面检查 — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+        print(f"  PC Guardian 全面检查 — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
         print("=" * 60)
 
-        print("\n🧹 [1/4] 垃圾清理扫描")
+        print("\n [1/4] 垃圾清理扫描")
         cleanup = scan_cleanup()
         rs = cleanup["risk_summary"]
         print(f"  可回收: {cleanup['total_human']}  "
               f"(安全 {rs['safe']['human']} / 需确认 {rs['confirm']['human']})")
         for cat in cleanup["categories"][:5]:
-            icon = {"safe": "✅", "confirm": "⚠️", "dangerous": "🔴"}[cat["risk"]]
+            icon = {"safe": "[OK]", "confirm": "[WARN]", "dangerous": "[HIGH]"}[cat["risk"]]
             print(f"    {icon} {cat['desc']}: {cat['total_human']}")
 
-        print("\n📡 [2/4] 网络状态")
+        print("\n [2/4] 网络状态")
         info = get_network_info()
         if "local_ip" in info:
             print(f"  本地 IP: {info['local_ip']}")
@@ -120,14 +120,14 @@ def main():
         if ping["reachable"]:
             print(f"  Ping: {ping.get('rtt_avg', '?')}ms")
         else:
-            print("  ⚠️ 网络不可达")
+            print("  [WARN] 网络不可达")
 
-        print("\n📦 [3/4] Skill 状态")
+        print("\n [3/4] Skill 状态")
         skills = scan_all_skills()
         git_count = sum(1 for s in skills if s.get("has_git"))
         print(f"  已安装: {len(skills)} | Git 管理: {git_count}")
 
-        print("\n🔒 [4/4] 安全快检")
+        print("\n [4/4] 安全快检")
         high_risk_count = 0
         seen = set()
         for sd in [os.path.expanduser("~/.agents/skills"), os.path.expanduser("~/.claude/skills")]:
@@ -141,9 +141,9 @@ def main():
                     if r["risk_score"] >= 20:
                         high_risk_count += 1
         if high_risk_count == 0:
-            print("  ✅ 未发现高风险 skill")
+            print("  [OK] 未发现高风险 skill")
         else:
-            print(f"  🔴 {high_risk_count} 个高风险 skill（运行 security audit 查看详情）")
+            print(f"  [HIGH] {high_risk_count} 个高风险 skill（运行 security audit 查看详情）")
 
         print("\n" + "=" * 60)
 
@@ -157,13 +157,13 @@ def main():
             if "--json" in args:
                 print(json.dumps(result, ensure_ascii=False, indent=2))
             else:
-                print(f"🧹 清理扫描 — {result['system']} — {result['total_human']}\n")
+                print(f" 清理扫描 — {result['system']} — {result['total_human']}\n")
                 rs = result["risk_summary"]
-                print(f"  ✅ 安全: {rs['safe']['human']}  "
-                      f"⚠️  需确认: {rs['confirm']['human']}  "
-                      f"🔴 高危: {rs['dangerous']['human']}\n")
+                print(f"  [OK] 安全: {rs['safe']['human']}  "
+                      f"[WARN]  需确认: {rs['confirm']['human']}  "
+                      f"[HIGH] 高危: {rs['dangerous']['human']}\n")
                 for cat in result["categories"]:
-                    icon = {"safe": "✅", "confirm": "⚠️", "dangerous": "🔴"}[cat["risk"]]
+                    icon = {"safe": "[OK]", "confirm": "[WARN]", "dangerous": "[HIGH]"}[cat["risk"]]
                     note = f" ({cat['note']})" if cat.get("note") else ""
                     print(f"  {icon} {cat['desc']}: {cat['total_human']}{note}")
         elif sub == "clean":
@@ -202,7 +202,7 @@ def main():
         elif sub == "flush-dns":
             results = flush_dns()
             for r in results:
-                mark = "✅" if r["success"] else "⚠️"
+                mark = "[OK]" if r["success"] else "[WARN]"
                 print(f"{mark} {r['cmd']}")
         else:
             full_diagnostic()
@@ -217,16 +217,16 @@ def main():
             if "--json" in args:
                 print(json.dumps(stats, ensure_ascii=False, indent=2, default=str))
             else:
-                print(f"📂 {args[1]}: {stats['total_files']} 个文件, {human_size(stats['total_size'])}")
+                print(f" {args[1]}: {stats['total_files']} 个文件, {human_size(stats['total_size'])}")
                 for cat, info in sorted(stats["categories"].items(), key=lambda x: x[1]["size"], reverse=True):
                     print(f"  {cat}: {info['count']}个 / {human_size(info['size'])}")
         elif sub == "suggest":
             suggestions = suggest_organization(args[1])
             for s in suggestions:
-                print(f"  📌 {s['type']}: {s['desc']} → {s['action']}")
+                print(f"   {s['type']}: {s['desc']} → {s['action']}")
         elif sub == "duplicates":
             dups = find_duplicates(args[1])
-            print(f"🔍 {len(dups)} 组重复文件:")
+            print(f" {len(dups)} 组重复文件:")
             for d in dups[:10]:
                 print(f"  {human_size(d['size'])} × {len(d['files'])}")
                 for f in d["files"]:
@@ -251,10 +251,10 @@ def main():
             print(f"{desc}: {val}")
         elif sub == "set":
             ok, msg = set_setting(args[1], args[2])
-            print(f"{'✅' if ok else '⚠️'} {msg}")
+            print(f"{'[OK]' if ok else '[WARN]'} {msg}")
         elif sub == "restore":
             ok, msg = restore_last(args[1])
-            print(f"{'✅' if ok else '⚠️'} {msg}")
+            print(f"{'[OK]' if ok else '[WARN]'} {msg}")
 
     # ── Skill 管理 ────────────────────────────────────────────────
     elif module == "skill":
@@ -264,13 +264,13 @@ def main():
             for r in check_all_updates():
                 name = os.path.basename(r["path"])
                 behind = r.get("behind_count", 0)
-                mark = "⬆️" if behind > 0 else "✅"
+                mark = "[UP]" if behind > 0 else "[OK]"
                 print(f"  {mark} {name}: {r.get('status', '?')} ({behind} commits)")
         elif sub == "report":
             full_report()
         else:
             for s in scan_all_skills():
-                git = "🔀" if s.get("has_git") else "  "
+                git = "" if s.get("has_git") else "  "
                 print(f"  {git} {s['name']:40s} v{s['version']:15s}  {s['last_modified']}")
 
     # ── 安全审计 ──────────────────────────────────────────────────

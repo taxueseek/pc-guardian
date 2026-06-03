@@ -256,7 +256,7 @@ def scan_skill(skill_path, exclude_self=True):
         "risky_files": len(risky_files),
         "findings": deduped,
         "risk_score": risk_score,
-        "risk_level": "🔴 高风险" if risk_score >= 20 else "🟡 中风险" if risk_score >= 5 else "🟢 低风险",
+        "risk_level": "[HIGH] 高风险" if risk_score >= 20 else "[MED] 中风险" if risk_score >= 5 else "[LOW] 低风险",
     }
 
 
@@ -305,7 +305,7 @@ def check_skill_integrity(skill_path):
 
 def full_security_audit():
     """完整安全审计"""
-    print("🔒 PC Guardian Skill 安全审计\n")
+    print(" PC Guardian Skill 安全审计\n")
 
     all_skills = []
     seen = set()
@@ -343,16 +343,16 @@ def full_security_audit():
             clean.append(result)
 
     # 输出报告
-    print(f"📊 安全概览：")
-    print(f"  🔴 高风险：{len(high_risk)}")
-    print(f"  🟡 中风险：{len(medium_risk)}")
-    print(f"  🟢 低风险：{len(clean)}\n")
+    print(f" 安全概览：")
+    print(f"  [HIGH] 高风险：{len(high_risk)}")
+    print(f"  [MED] 中风险：{len(medium_risk)}")
+    print(f"  [LOW] 低风险：{len(clean)}\n")
 
     if high_risk:
         print("=" * 60)
-        print("🔴 高风险 skill（需立即审查）：")
+        print("[HIGH] 高风险 skill（需立即审查）：")
         for r in high_risk:
-            print(f"\n  📌 {r['skill_name']} (风险分: {r['risk_score']})")
+            print(f"\n   {r['skill_name']} (风险分: {r['risk_score']})")
             print(f"     扫描文件: {r['files_scanned']}, 风险文件: {r['risky_files']}")
             for f in r["findings"][:5]:
                 print(f"     [{f['severity']}] {f['category']}: 第{f['line']}行")
@@ -362,25 +362,25 @@ def full_security_audit():
             if r["integrity_issues"]:
                 print(f"     完整性问题:")
                 for issue in r["integrity_issues"][:3]:
-                    print(f"       ⚠️ {issue}")
+                    print(f"       [WARN] {issue}")
 
     if medium_risk:
         print("\n" + "=" * 60)
-        print("🟡 中风险 skill（建议关注）：")
+        print("[MED] 中风险 skill（建议关注）：")
         for r in medium_risk:
             categories = set(f["category"] for f in r["findings"])
-            print(f"  📌 {r['skill_name']}: {', '.join(categories)}")
+            print(f"   {r['skill_name']}: {', '.join(categories)}")
 
     # 完整性问题汇总
     integrity_problems = [(r["skill_name"], r["integrity_issues"]) for r in results if r["integrity_issues"]]
     if integrity_problems:
         print("\n" + "=" * 60)
-        print("⚠️  完整性问题：")
+        print("[WARN]  完整性问题：")
         for name, issues in integrity_problems[:10]:
             for issue in issues[:2]:
                 print(f"  {name}: {issue}")
 
-    print(f"\n✅ 审计完成：{len(all_skills)} 个 skill 已扫描")
+    print(f"\n[OK] 审计完成：{len(all_skills)} 个 skill 已扫描")
     print(f"   总发现：{sum(len(r['findings']) for r in results)} 个安全问题")
 
 
@@ -407,7 +407,7 @@ if __name__ == "__main__":
         if args.json:
             print(json.dumps(result, ensure_ascii=False, indent=2))
         else:
-            print(f"🔒 {result['skill_name']} 安全扫描")
+            print(f" {result['skill_name']} 安全扫描")
             print(f"风险等级：{result['risk_level']}")
             print(f"扫描文件：{result['files_scanned']}")
             print(f"发现问题：{len(result['findings'])}\n")
@@ -416,6 +416,6 @@ if __name__ == "__main__":
             if integrity:
                 print(f"\n完整性问题：")
                 for issue in integrity:
-                    print(f"  ⚠️ {issue}")
+                    print(f"  [WARN] {issue}")
     else:
         parser.print_help()

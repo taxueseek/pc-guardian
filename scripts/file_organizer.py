@@ -311,7 +311,7 @@ if __name__ == "__main__":
         if args.json:
             print(json.dumps(stats, ensure_ascii=False, indent=2, default=str))
         else:
-            print(f"📂 {args.directory}")
+            print(f" {args.directory}")
             print(f"文件总数: {stats['total_files']}")
             print(f"总大小: {human_size(stats['total_size'])}\n")
             print("分类统计:")
@@ -327,9 +327,9 @@ if __name__ == "__main__":
         if args.json:
             print(json.dumps(suggestions, ensure_ascii=False, indent=2))
         else:
-            print(f"💡 整理建议 ({args.directory})\n")
+            print(f" 整理建议 ({args.directory})\n")
             for s in suggestions:
-                print(f"  📌 {s['type']}: {s['desc']}")
+                print(f"   {s['type']}: {s['desc']}")
                 print(f"     建议: {s['action']}")
                 if "files" in s:
                     for f in s["files"][:5]:
@@ -338,7 +338,7 @@ if __name__ == "__main__":
 
     elif args.command == "duplicates":
         dups = find_duplicates(args.directory, args.min_size)
-        print(f"🔍 重复文件 ({len(dups)} 组):\n")
+        print(f" 重复文件 ({len(dups)} 组):\n")
         for d in dups[:20]:
             print(f"  {human_size(d['size'])} × {len(d['files'])}")
             for f in d["files"]:
@@ -355,7 +355,7 @@ if __name__ == "__main__":
         for op in ops:
             by_cat[op["category"]].append(op)
         for cat, cat_ops in by_cat.items():
-            print(f"  📁 {cat}: {len(cat_ops)} 个文件")
+            print(f"   {cat}: {len(cat_ops)} 个文件")
             for op in cat_ops[:3]:
                 print(f"    {op['source']} → {op['target']}")
             if len(cat_ops) > 3:

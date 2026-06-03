@@ -393,14 +393,14 @@ if __name__ == "__main__":
         if args.json:
             print(json.dumps(result, ensure_ascii=False, indent=2))
         else:
-            print(f"🧹 PC Guardian 清理扫描 — {result['system']}")
+            print(f" PC Guardian 清理扫描 — {result['system']}")
             print(f"可回收空间：{result['total_human']}")
             rs = result["risk_summary"]
-            print(f"  ✅ 安全：{rs['safe']['human']}  "
-                  f"⚠️  需确认：{rs['confirm']['human']}  "
-                  f"🔴 高危：{rs['dangerous']['human']}\n")
+            print(f"  [OK] 安全：{rs['safe']['human']}  "
+                  f"[WARN]  需确认：{rs['confirm']['human']}  "
+                  f"[HIGH] 高危：{rs['dangerous']['human']}\n")
             for cat in result["categories"]:
-                risk_icon = {"safe": "✅", "confirm": "⚠️", "dangerous": "🔴"}[cat["risk"]]
+                risk_icon = {"safe": "[OK]", "confirm": "[WARN]", "dangerous": "[HIGH]"}[cat["risk"]]
                 print(f"  {risk_icon} [{cat['risk']}] {cat['desc']}: {cat['total_human']}", end="")
                 if cat.get("note"):
                     print(f"  ({cat['note']})", end="")

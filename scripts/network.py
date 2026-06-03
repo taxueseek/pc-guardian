@@ -182,11 +182,11 @@ def speed_estimate():
 
 def full_diagnostic():
     """完整网络诊断"""
-    print("🔍 网络诊断中...\n")
+    print(" 网络诊断中...\n")
 
     # 1. 网络信息
     info = get_network_info()
-    print("📡 网络信息：")
+    print(" 网络信息：")
     if "local_ip" in info:
         print(f"  本地 IP: {info['local_ip']}")
     if "gateway" in info:
@@ -206,30 +206,30 @@ def full_diagnostic():
     print()
 
     # 2. Ping 测试
-    print("📶 Ping 测试：")
+    print(" Ping 测试：")
     for host in ["8.8.8.8", "114.114.114.114", "baidu.com"]:
         r = ping_test(host, count=5)
         if r["reachable"]:
             avg = r.get("rtt_avg", "?")
             loss = r.get("packet_loss", "")
-            status = "✅" if avg != "?" and avg < 100 else "⚠️" if avg != "?" and avg < 300 else "❌"
+            status = "[OK]" if avg != "?" and avg < 100 else "[WARN]" if avg != "?" and avg < 300 else "[FAIL]"
             print(f"  {status} {host}: avg={avg}ms  {loss}")
         else:
-            print(f"  ❌ {host}: 不可达")
+            print(f"  [FAIL] {host}: 不可达")
     print()
 
     # 3. DNS 测试
-    print("🌐 DNS 解析：")
+    print(" DNS 解析：")
     dns_results = dns_test()
     for d in dns_results:
         if d["status"] == "ok":
-            print(f"  ✅ {d['domain']} → {d['resolved_ip']} ({d['latency_ms']}ms)")
+            print(f"  [OK] {d['domain']} → {d['resolved_ip']} ({d['latency_ms']}ms)")
         else:
-            print(f"  ❌ {d['domain']}: 解析失败")
+            print(f"  [FAIL] {d['domain']}: 解析失败")
     print()
 
     # 4. 速度估算
-    print("⚡ 连接速度估算：")
+    print(" 连接速度估算：")
     speed_results = speed_estimate()
     for s in speed_results:
         if s["status"] == "ok":
@@ -306,27 +306,27 @@ def optimize_mtu():
 
 def full_optimize():
     """执行全套网络优化"""
-    print("🚀 PC Guardian 网络优化\n")
+    print(" PC Guardian 网络优化\n")
 
     # 1. 先诊断
     full_diagnostic()
 
     # 2. 刷新 DNS
-    print("🔄 刷新 DNS 缓存...")
+    print(" 刷新 DNS 缓存...")
     dns_results = flush_dns()
     for r in dns_results:
-        mark = "✅" if r["success"] else "⚠️"
+        mark = "[OK]" if r["success"] else "[WARN]"
         print(f"  {mark} {r['cmd']}")
     print()
 
     # 3. MTU 检测
-    print("📏 MTU 检测...")
+    print(" MTU 检测...")
     mtu = optimize_mtu()
     print(f"  建议 MTU: {mtu['optimal_mtu']}")
     print()
 
     # 4. 优化建议
-    print("💡 优化建议：")
+    print(" 优化建议：")
     print("  1. DNS 已刷新，解析问题应已解决")
     print("  2. 如果 Wi-Fi 信号弱，尝试靠近路由器或切换 5GHz 频段")
     print("  3. 如果延迟高，检查是否有后台下载占用带宽")
@@ -358,7 +358,7 @@ if __name__ == "__main__":
     elif args.command == "flush-dns":
         results = flush_dns()
         for r in results:
-            mark = "✅" if r["success"] else "⚠️"
+            mark = "[OK]" if r["success"] else "[WARN]"
             print(f"{mark} {r['cmd']}")
     elif args.command == "ping":
         r = ping_test(args.host, args.count)
